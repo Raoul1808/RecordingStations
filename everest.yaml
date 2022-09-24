@@ -1,0 +1,6 @@
+﻿- Name: RecordingStations
+  Version: 0.1.0
+  DLL: bin/Debug/RecordingStations.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.0.0
