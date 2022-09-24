@@ -52,10 +52,13 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Entities\RecordingStation.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="RecordingStationsModule.cs" />
+        <Compile Include="RecordingSystem.cs" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Ahorn\entities\recordingStation.jl" />
       <Content Include="everest.yaml" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

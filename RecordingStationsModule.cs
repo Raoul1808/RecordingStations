@@ -2,6 +2,9 @@
 
 namespace RecordingStations
 {
+    /// <summary>
+    /// Base class for the mod
+    /// </summary>
     public class RecordingStationsModule : EverestModule
     {
         public static RecordingStationsModule Instance;
