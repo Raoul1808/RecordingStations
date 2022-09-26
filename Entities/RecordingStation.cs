@@ -2,6 +2,8 @@
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
+using System.Collections.Generic;
+using Celeste.Mod;
 
 namespace RecordingStations.Entities
 {
@@ -11,7 +13,19 @@ namespace RecordingStations.Entities
     [CustomEntity("RecordingStations/RecordingStation")]
     public class RecordingStation : Entity
     {
+        public enum RecordingMode
+        {
+            Idle,
+            Recording,
+            Playback,
+        }
+        
         public TalkComponent InteractComponent;
+
+        public static RecordingMode CurrentMode { get; private set; } = RecordingMode.Idle;
+
+        private static List<Player.ChaserState> _recordedStates = new List<Player.ChaserState>();
+        private static RecordedPlayer _playerPlayback = null;
         
         public RecordingStation(EntityData data, Vector2 offset)
             : base (data.Position + offset)
@@ -28,9 +42,51 @@ namespace RecordingStations.Entities
             Add(image);
         }
 
+        public static void PlayerRecord(On.Celeste.Player.orig_Update orig, Player player)
+        {
+            if (CurrentMode == RecordingMode.Recording)
+            {
+                _recordedStates.Add(new Player.ChaserState(player));
+            }
+            orig(player);
+        }
+
         public void Interact(Player player)
         {
-            RecordingSystem.AdvanceNext();
+            NextRecordingMode();
+        }
+
+        public static void NextRecordingMode()
+        {
+            CurrentMode++;
+            if (CurrentMode > RecordingMode.Playback)
+                CurrentMode = RecordingMode.Idle;
+            
+            Logger.Log("RecStation", "Changed state to " + CurrentMode);
+
+            switch (CurrentMode)
+            {
+                case RecordingMode.Idle:
+                    Cleanup();
+                    break;
+                
+                case RecordingMode.Playback:
+                    PlayBack();
+                    break;
+            }
+        }
+
+        private static void Cleanup()
+        {
+            if (_playerPlayback != null)
+                Engine.Scene.Remove(_playerPlayback);
+            _recordedStates.Clear();
+        }
+
+        private static void PlayBack()
+        {
+            Logger.Log("RecPlayback", "Playing back " + _recordedStates.Count + " frames");
+            Engine.Scene.Add(_playerPlayback = new RecordedPlayer(_recordedStates[0].Position, _recordedStates));
         }
     }
 }

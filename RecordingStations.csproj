@@ -52,10 +52,10 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Entities\RecordedPlayer.cs" />
         <Compile Include="Entities\RecordingStation.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="RecordingStationsModule.cs" />
-        <Compile Include="RecordingSystem.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="Ahorn\entities\recordingStation.jl" />

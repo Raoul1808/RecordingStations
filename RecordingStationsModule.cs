@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod;
+using RecordingStations.Entities;
 
 namespace RecordingStations
 {
@@ -16,12 +17,12 @@ namespace RecordingStations
         
         public override void Load()
         {
-            Logger.Log("RecStation", "Hello from RecordingStationsModule!");
+            On.Celeste.Player.Update += RecordingStation.PlayerRecord;
         }
 
         public override void Unload()
         {
-            Logger.Log("RecStation", "Goodbye from RecordingStationsModule!");
+            On.Celeste.Player.Update -= RecordingStation.PlayerRecord;
         }
     }
 }
